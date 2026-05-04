@@ -1,0 +1,102 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum VenueStatus {
+  TO_TRY
+  VISITED
+  NOT_GOING
+  FAVORITE
+}
+
+enum ActivityType {
+  VENUE_ADDED
+  VENUE_UPDATED
+  VENUE_RATED
+  VENUE_VISITED
+  VENUE_FAVORITED
+  LIST_CREATED
+  LIST_VENUE_ADDED
+}
+
+model Venue {
+  id               String      @id @default(uuid())
+  name             String
+  coverImageUrl    String?
+  type             String
+  tags             String[]
+  priceLevel       Int
+  status           VenueStatus @default(TO_TRY)
+  neighborhood     String
+  sector           String?
+  address          String?
+  googlePlaceId    String?     @unique
+  lat              Float
+  lng              Float
+  dateVisited      DateTime?
+  personalRating   Float?
+  notes            String?     @db.Text
+  openingHours     Json?
+  phoneNumber      String?
+  website          String?
+  googleRating     Float?
+  googleReviewCount Int?
+  googlePriceLevel Int?
+  lastSyncedAt     DateTime?
+  createdAt        DateTime    @default(now())
+  updatedAt        DateTime    @updatedAt
+
+  listVenues       ListVenue[]
+  activities       Activity[]
+}
+
+model List {
+  id          String      @id @default(uuid())
+  name        String
+  description String?
+  isPublic    Boolean     @default(false)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  listVenues  ListVenue[]
+  activities  Activity[]
+}
+
+model ListVenue {
+  id        String   @id @default(uuid())
+  listId    String
+  venueId   String
+  addedAt   DateTime @default(now())
+
+  list      List     @relation(fields: [listId], references: [id], onDelete: Cascade)
+  venue     Venue    @relation(fields: [venueId], references: [id], onDelete: Cascade)
+
+  @@unique([listId, venueId])
+}
+
+model Activity {
+  id           String       @id @default(uuid())
+  type         ActivityType
+  description  String
+  metadata     Json?
+  venueId      String?
+  listId       String?
+  createdAt    DateTime     @default(now())
+
+  venue        Venue?       @relation(fields: [venueId], references: [id], onDelete: SetNull)
+  list         List?        @relation(fields: [listId], references: [id], onDelete: SetNull)
+}
+
+model UserPreferences {
+  id               String  @id @default(uuid())
+  mapProvider      String  @default("google")
+  defaultSector    String  @default("all")
+  highContrast     Boolean @default(false)
+  displayName      String?
+  avatarUrl        String?
+}

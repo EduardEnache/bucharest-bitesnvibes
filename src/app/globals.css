@@ -1,0 +1,225 @@
+@import "tailwindcss";
+
+/* ─── Google Material Symbols ─────────────────────────────── */
+
+/* ─── Obsidian Design System Theme ────────────────────────── */
+@theme inline {
+  /* Color tokens */
+  --color-background: #09090b;
+  --color-surface: #0c0c0f;
+  --color-surface-container: #121215;
+  --color-surface-container-high: #18181b;
+  --color-surface-container-highest: #1e1e22;
+  --color-outline-variant: #27272a;
+  --color-outline: #52525b;
+  --color-on-surface: #fafafa;
+  --color-on-surface-variant: #a1a1aa;
+  --color-primary: #a78bfa;
+  --color-primary-container: #7c3aed;
+  --color-on-primary: #0a0012;
+  --color-deep-amber: #d97706;
+  --color-amber-accent: #f59e0b;
+  --color-tertiary: #34d399;
+  --color-error: #ef4444;
+
+  /* Font */
+  --font-sans: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+}
+
+/* ─── Base Styles ─────────────────────────────────────────── */
+:root {
+  color-scheme: dark;
+}
+
+body {
+  background-color: #09090b;
+  color: #fafafa;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ─── Scrollbar ───────────────────────────────────────────── */
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Thin dark scrollbar for general use */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #09090b;
+}
+::-webkit-scrollbar-thumb {
+  background: #27272a;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #52525b;
+}
+
+/* ─── Snap Scrolling ──────────────────────────────────────── */
+.snap-scroll-x {
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+.snap-scroll-x > * {
+  scroll-snap-align: start;
+}
+
+/* ─── Material Symbols ────────────────────────────────────── */
+.material-symbols-outlined {
+  font-variation-settings:
+    'FILL' 0,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 24;
+  font-size: 24px;
+  line-height: 1;
+  vertical-align: middle;
+}
+
+.material-symbols-outlined.filled {
+  font-variation-settings:
+    'FILL' 1,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 24;
+}
+
+/* ─── Focus Ring ──────────────────────────────────────────── */
+.focus-ring:focus-visible {
+  outline: 2px solid #a78bfa;
+  outline-offset: 2px;
+}
+
+/* ─── Toast Animation ─────────────────────────────────────── */
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slide-up {
+  animation: slide-up 0.3s ease-out;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.2s ease-out;
+}
+
+/* ─── Bokeh Effect (Login Page) ───────────────────────────── */
+.bokeh-bg {
+  position: relative;
+  background: #09090b;
+  overflow: hidden;
+}
+
+.bokeh-bg::before,
+.bokeh-bg::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.15;
+}
+
+.bokeh-bg::before {
+  width: 400px;
+  height: 400px;
+  background: #d97706;
+  top: 20%;
+  left: 10%;
+  animation: float-1 8s ease-in-out infinite;
+}
+
+.bokeh-bg::after {
+  width: 350px;
+  height: 350px;
+  background: #a78bfa;
+  bottom: 20%;
+  right: 15%;
+  animation: float-2 10s ease-in-out infinite;
+}
+
+@keyframes float-1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(30px, -20px) scale(1.1); }
+  66% { transform: translate(-20px, 20px) scale(0.9); }
+}
+
+@keyframes float-2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(-25px, 15px) scale(0.9); }
+  66% { transform: translate(15px, -25px) scale(1.1); }
+}
+
+/* Additional bokeh circles */
+.bokeh-circle {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  opacity: 0.1;
+}
+
+/* ─── Skeleton Loader ─────────────────────────────────────── */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    #121215 25%,
+    #1e1e22 50%,
+    #121215 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+  border-radius: 8px;
+}
+
+/* ─── Card Hover Effect ───────────────────────────────────── */
+.card-hover {
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+.card-hover:hover {
+  border-color: #52525b;
+  transform: translateY(-1px);
+}
+
+/* ─── Status Badge Variants ───────────────────────────────── */
+.badge-to-try {
+  background-color: #f59e0b;
+  color: #000;
+}
+.badge-visited {
+  background-color: #a78bfa;
+  color: #0a0012;
+}
+.badge-favorite {
+  background-color: #34d399;
+  color: #000;
+}
+.badge-not-going {
+  background-color: #52525b;
+  color: #fafafa;
+}
